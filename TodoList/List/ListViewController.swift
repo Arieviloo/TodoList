@@ -34,8 +34,11 @@ class ListViewController: UIViewController {
 
 extension ListViewController: ListViewScreenProtocol {
     func actionAddNewTodo() {
-        print("Clique +")
+        let alert = UIAlertController(title: "New Item", message: "Enter new to do list item!", preferredStyle: .alert)
+        
+        present(alert, animated: true)
     }
+    
 
 }
 
