@@ -19,6 +19,14 @@ class ListViewScreen: UIView {
         self.delegate = delegate
     }
     
+   lazy var table: UITableView = {
+        let tab = UITableView()
+        tab.translatesAutoresizingMaskIntoConstraints = false
+        tab.backgroundColor = .white
+        tab.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        return tab
+    }()
+    
     lazy var newTodoButton: UIButton = {
         var config = UIButton.Configuration.filled()
         config.image = UIImage(systemName: "plus")
@@ -26,12 +34,12 @@ class ListViewScreen: UIView {
         config.buttonSize = .large
         let btn = UIButton(configuration: config, primaryAction: tappedAddNewTodo())
         btn.translatesAutoresizingMaskIntoConstraints = false
-        
         return btn
     }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        addSubview(table)
         addSubview(newTodoButton)
         configConstraints()
     }
@@ -40,9 +48,13 @@ class ListViewScreen: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    public func configProtocolosTableView(delegate: UITableViewDelegate, dataSource: UITableViewDataSource) {
+        table.dataSource = dataSource
+        table.delegate = delegate
+    }
+    
     private func tappedAddNewTodo() -> UIAction {
         let action = UIAction { _ in
-         
             self.delegate?.actionAddNewTodo()
         }
         
@@ -51,9 +63,16 @@ class ListViewScreen: UIView {
     
     private func configConstraints() {
         NSLayoutConstraint.activate([
+            table.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            table.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            table.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            table.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            
             newTodoButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -20),
-            newTodoButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20)
+            newTodoButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20),
+            
         ])
     }
+   
     
 }
